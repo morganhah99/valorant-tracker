@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import axios from 'axios';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+
+  const [userName, setUserName] = useState("")
+  const [accountLevel, setAccountLevel] = useState(0)
+
+  axios.get('https://api.henrikdev.xyz/valorant/v1/account/peanutdamage/ftp')
+    .then(res => {
+      setUserName(res.data.data.name)
+    })
+  axios.get('https://api.henrikdev.xyz/valorant/v1/account/peanutdamage/ftp')
+    .then(res => {
+      setAccountLevel(res.data.data.account_level)
+    })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>Username: {userName}</p> Account level: {accountLevel}
     </div>
   );
 }
