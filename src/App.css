@@ -1,0 +1,12 @@
+.history {
+    border: 3px solid black;
+    margin-top: 60px;
+}
+.history > p{
+    margin: 0;
+}
+.headers {
+    text-align: center;
+    margin: auto;
+    font-size: 30px;
+}
