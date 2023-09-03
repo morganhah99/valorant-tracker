@@ -26,10 +26,10 @@ function App() {
       setUserRank(res.data.data.current_data.currenttierpatched)
     })
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
-  .then(res => {
-    const maps = res.data.data.map(match => match.metadata.map);
-    setMapName(maps);
-  })
+    .then(res => {
+      setMapName(res.data.data[0].metadata.map)
+    
+    })
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
     .then(res => {
       for(let i=0; i<5; i++){
