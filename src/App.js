@@ -31,11 +31,11 @@ function App() {
     
     })
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
-    .then(res => {
-      for(let i=0; i<5; i++){
-        setMatchTime(res.data.data[i].metadata.game_start_patched)
-      }
-    })
+  .then(res => {
+    const matchTimes = res.data.data.map(match => match.metadata.game_start_patched);
+    setMatchTime(matchTimes);
+    console.log(matchTimes);
+  });
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
     .then(res => {
       setRoundWins(res.data.data[0].teams.red.rounds_won)
