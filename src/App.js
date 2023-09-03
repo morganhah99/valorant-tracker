@@ -9,9 +9,12 @@ function App() {
   const [accountLevel, setAccountLevel] = useState("")
   const [userRank, setUserRank] = useState("")
   const [mapName, setMapName] = useState("")
-  const [matchTime, setMatchTime] = useState("")
+  const [matchTime, setMatchTime] = useState([])
   const [roundWins, setRoundWins] = useState("")
   const [roundLoses, setRoundLoses] = useState("")
+  const [playerKills, setPlayerKills] = useState("")
+  const [playerDeaths, setPlayerDeaths] = useState("")
+  const [playerAssists, setPlayerAssists] = useState("")
 
   function getUserInfoRequest() {
     axios.get(`https://api.henrikdev.xyz/valorant/v1/account/${userName}/${userTag}`)
@@ -23,12 +26,15 @@ function App() {
       setUserRank(res.data.data.current_data.currenttierpatched)
     })
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
-    .then(res => {
-      setMapName(res.data.data[0].metadata.map)
-    })
+  .then(res => {
+    const maps = res.data.data.map(match => match.metadata.map);
+    setMapName(maps);
+  })
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
     .then(res => {
-      setMatchTime(res.data.data[0].metadata.game_start_patched)
+      for(let i=0; i<5; i++){
+        setMatchTime(res.data.data[i].metadata.game_start_patched)
+      }
     })
     axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
     .then(res => {
@@ -38,6 +44,17 @@ function App() {
     .then(res => {
       setRoundLoses(res.data.data[0].teams.red.rounds_lost)
     })
+
+    axios.get(`https://api.henrikdev.xyz/valorant/v3/matches/na/${userName}/${userTag}?filter=competitive`)
+    .then(res => {
+      const allPlayers = res.data.data[0].players.all_players;
+      const userPlayer = allPlayers.find(player => player.name === userName);
+      setPlayerKills(userPlayer.stats.kills)
+      setPlayerDeaths(userPlayer.stats.deaths)
+      setPlayerAssists(userPlayer.stats.assists)
+  });
+
+    
     
   }
 
@@ -53,6 +70,8 @@ function App() {
           <p>{mapName}</p>
           <p>{matchTime}</p>
           <p>{roundWins}:{roundLoses}</p>
+          <p>K/D/A</p>
+          <p>{playerKills}/{playerDeaths}/{playerAssists}</p>
       </div>
     </div>
   );
